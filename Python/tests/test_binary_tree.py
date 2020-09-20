@@ -232,3 +232,34 @@ class TestBST:
         test_tree.transplant(to_replace, replacement)
 
         assert test_tree == result_tree
+
+    def test_distance(self):
+        node_list = [12,
+                     [5, [2, None, None], [9, None, None]],
+                     [17, [14, None, None], None]]
+        test_tree = binary_search_tree(node_list)
+
+        assert test_tree.distance(14, 5) == 3
+        assert test_tree.distance(5, 2) == 1
+
+    def test_distance_one_nonexistent(self):
+        node_list = [12,
+                     [5, [2, None, None], [9, None, None]],
+                     [17, [14, None, None], None]]
+        test_tree = binary_search_tree(node_list)
+
+        with pytest.raises(ValueError) as error_info:
+            test_tree.distance(15, 2)
+
+        assert '15 does not exist in the tree.' in str(error_info)
+
+    def test_distance_both_nonexistent(self):
+        node_list = [12,
+                     [5, [2, None, None], [9, None, None]],
+                     [17, [14, None, None], None]]
+        test_tree = binary_search_tree(node_list)
+
+        with pytest.raises(ValueError) as error_info:
+            test_tree.distance(15, 1)
+
+        assert '15 and 1 do not exist in the tree' in str(error_info)

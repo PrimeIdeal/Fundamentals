@@ -359,18 +359,52 @@ class binary_search_tree(binary_tree):
         """
         Removes the node containing a given value from the binary tree.
         """
-        to_replace = self.search(val, retrieve=True)
+        to_delete = self.search(val, retrieve=True)
 
-        if not to_replace.left:
-            self.transplant(to_replace, to_replace.right)
-        elif not to_replace.right:
-            self.transplant(to_replace, to_replace.left)
+        if not to_delete.left:
+            self.transplant(to_delete, to_delete.right)
+        elif not to_delete.right:
+            self.transplant(to_delete, to_delete.left)
         else:
-            min_node = to_replace.right.minimum(retrieve=True)
-            if min_node.parent is not to_replace:
+            min_node = to_delete.right.minimum(retrieve=True)
+            if min_node.parent is not to_delete:
                 self.transplant(min_node, min_node.right)
-                min_node.right = to_replace.right
+                min_node.right = to_delete.right
                 min_node.right.parent = min_node
-            self.transplant(to_replace, min_node)
-            min_node.left = to_replace.left
+            self.transplant(to_delete, min_node)
+            min_node.left = to_delete.left
             min_node.left.parent = min_node
+
+    def distance(self, val1, val2):
+        """
+        Determines the distance between the node containing val1 and
+        the node containing val2.
+        """
+        dist = 0
+        max_val, min_val = max(val1, val2), min(val1, val2)
+        curr1, curr2 = self, self
+
+        try:
+            while curr1.val != min_val and curr2.val != max_val:
+                curr1 = curr1.right if curr1.val < min_val else curr1.left
+                curr2 = curr2.right if curr2.val < max_val else curr2.left
+                if curr1 is not curr2:
+                    dist += 2
+
+            if not (curr1.val == min_val and curr2.val == max_val):
+                curr, last_val = (curr1, min_val) if curr1.val != min_val \
+                    else (curr2, max_val)
+                while curr.val != last_val:
+                    curr = curr.right if curr.val < last_val else curr.left
+                    dist += 1
+
+            return dist
+
+        except AttributeError:
+            if not curr1 and not curr2:
+                raise ValueError(
+                    f'{val1} and {val2} do not exist in the tree.'
+                )
+            else:
+                bad_val = min_val if not curr1 else max_val
+                raise ValueError(f'{bad_val} does not exist in the tree.')
