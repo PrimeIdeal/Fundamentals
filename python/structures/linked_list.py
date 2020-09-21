@@ -8,6 +8,7 @@ class linked_list:
         """
         Constructor for the linked_list class.
         """
+        self.empty = False if node_list else True
         self.val = node_list[0] if node_list else None
         self.next = linked_list(node_list=node_list[1:]) \
             if node_list and node_list[1:] else None
@@ -16,7 +17,7 @@ class linked_list:
         """
         Returns the linked list's unique string representation.
         """
-        return '->'.join(str(elt) for elt in self.serialize())
+        return '['+'->'.join(str(elt) for elt in self.serialize())+']'
 
     def __eq__(self, other_list):
         """
@@ -24,7 +25,7 @@ class linked_list:
         """
         curr1, curr2 = self, other_list
         while curr1 and curr2:
-            if curr1.val != curr2.val:
+            if curr1.empty != curr2.empty or curr1.val != curr2.val:
                 return False
             curr1, curr2 = curr1.next, curr2.next
 
@@ -38,7 +39,8 @@ class linked_list:
         list_representation = []
 
         while curr:
-            list_representation.append(curr.val)
+            if not curr.empty:
+                list_representation.append(curr.val)
             curr = curr.next
 
         return list_representation
@@ -68,8 +70,18 @@ class linked_list:
 
         return curr
 
-    def insert_head(self):
-        pass
+    def insert_head(self, val):
+        """
+        Returns a new linked list with a node containing the given value at
+        its head.
+        """
+        if self.empty:
+            self.val, self.empty = val, False
+            return self
+        else:
+            new_list = linked_list(node_list=[val])
+            new_list.next = self
+            return new_list
 
     def insert_tail(self):
         pass

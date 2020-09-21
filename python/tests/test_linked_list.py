@@ -1,6 +1,6 @@
 import pytest
 
-from Python.structures.linked_list import linked_list
+from python.structures.linked_list import linked_list
 
 
 class TestLinkedList:
@@ -14,12 +14,12 @@ class TestLinkedList:
             ([1, 2, 3], [1, 2, 3]),
             ([None], [None]),
             ([None, 3], [None, 3]),
-            ([], [None]),
-            (None, [None])
+            ([], []),
+            (None, [])
         ],
         ids=[
             'No Nulls',
-            'Null only',
+            'Null values in list',
             'Null and non-null',
             'Empty input',
             'Null input'
@@ -33,9 +33,9 @@ class TestLinkedList:
     @pytest.mark.parametrize(
         'nodes, expected',
         [
-            ([1, 2, 3], '1->2->3'),
-            ([], 'None'),
-            ([None, 3], 'None->3')
+            ([1, 2, 3], '[1->2->3]'),
+            ([], '[]'),
+            ([None, 3], '[None->3]')
         ],
         ids=[
             'No Nulls',
@@ -52,7 +52,7 @@ class TestLinkedList:
         'nodes1, nodes2',
         [
             ([1, 2, 3], [1, 2, 3]),
-            ([], [None]),
+            pytest.param([], [None], marks=pytest.mark.xfail),
             pytest.param([1, 2, 3], [3, 2, 1], marks=pytest.mark.xfail),
             pytest.param([1, 2], [1, 2, 3], marks=pytest.mark.xfail)
         ],
@@ -108,3 +108,22 @@ class TestLinkedList:
         expected_node = linked_list(expected)
 
         assert test_list.get_tail() == expected_node
+
+    @pytest.mark.parametrize(
+        'nodes, val, expected',
+        [
+            ([1, 2, 3], 0, [0, 1, 2, 3]),
+            ([], 0, [0])
+        ],
+        ids=[
+            'Nonempty list',
+            'Empty list'
+        ]
+    )
+    def test_insert_head(self, nodes, val, expected):
+        test_list = linked_list(nodes)
+        expected_list = linked_list(expected)
+
+        test_list = test_list.insert_head(val)
+
+        assert test_list == expected_list
