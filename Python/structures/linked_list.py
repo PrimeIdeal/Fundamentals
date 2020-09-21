@@ -10,23 +10,25 @@ class linked_list:
         """
         self.val = node_list[0] if node_list else None
         self.next = linked_list(node_list=node_list[1:]) \
-            if node_list[1:] else None
+            if node_list and node_list[1:] else None
 
     def __str__(self):
         """
         Returns the linked list's unique string representation.
         """
-        str_representation = '['
-
-        str_representation += '->'.join(str(elt) for elt in self.serialize())
-
-        return str_representation + ']'
+        return '->'.join(str(elt) for elt in self.serialize())
 
     def __eq__(self, other_list):
         """
         Returns True if other_list is equal to self, False otherwise.
         """
-        return self.serialize() == other_list.serialize()
+        curr1, curr2 = self, other_list
+        while curr1 and curr2:
+            if curr1.val != curr2.val:
+                return False
+            curr1, curr2 = curr1.next, curr2.next
+
+        return not (curr1 or curr2)
 
     def serialize(self):
         """
@@ -42,7 +44,18 @@ class linked_list:
         return list_representation
 
     def get_node(self, val):
-        pass
+        """
+        Returns the first node containing a given value if it exists
+        in the list, None otherwise.
+        """
+        curr = self
+
+        while curr:
+            if curr.val == val:
+                return curr
+            curr = curr.next
+
+        return None
 
     def get_tail(self):
         pass
