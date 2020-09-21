@@ -58,7 +58,15 @@ class linked_list:
         return None
 
     def get_tail(self):
-        pass
+        """
+        Returns the tail node of the linked list.
+        """
+        curr = self
+
+        while curr and curr.next:
+            curr = curr.next
+
+        return curr
 
     def insert_head(self):
         pass

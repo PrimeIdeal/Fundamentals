@@ -37,7 +37,11 @@ class TestLinkedList:
             ([], 'None'),
             ([None, 3], 'None->3')
         ],
-        ids=['No Nulls', 'Empty list', 'List with Nulls']
+        ids=[
+            'No Nulls',
+            'Empty list',
+            'List with Nulls'
+        ]
     )
     def test_str(self, nodes, expected):
         test_list = linked_list(nodes)
@@ -85,3 +89,22 @@ class TestLinkedList:
             assert test_list.get_node(val) == expected_list
         else:
             assert test_list.get_node(val) == expected
+
+    @pytest.mark.parametrize(
+        'nodes, expected',
+        [
+            ([1, 2, 3], [3]),
+            ([1, 2, None], [None]),
+            ([], [])
+        ],
+        ids=[
+            'Nonempty list',
+            'Nonempty list - Null tail',
+            'Empty list'
+        ]
+    )
+    def test_get_tail(self, nodes, expected):
+        test_list = linked_list(nodes)
+        expected_node = linked_list(expected)
+
+        assert test_list.get_tail() == expected_node
