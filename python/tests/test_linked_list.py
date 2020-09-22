@@ -167,3 +167,24 @@ class TestLinkedList:
         test_list.remove_head()
 
         assert test_list == expected_list
+
+    @pytest.mark.parametrize(
+        'nodes, expected',
+        [
+            ([1, 2, 3], [1, 2]),
+            ([0], []),
+            ([], [])
+        ],
+        ids=[
+            'Nonempty list',
+            'Single node list',
+            'Empty list'
+        ]
+    )
+    def test_remove_tail(self, nodes, expected):
+        test_list = linked_list(nodes)
+        expected_list = linked_list(expected)
+
+        test_list.remove_tail()
+
+        assert test_list == expected_list

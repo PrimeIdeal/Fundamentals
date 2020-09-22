@@ -105,10 +105,20 @@ class linked_list:
                 self.val, self.next = self.next.val, self.next.next
 
     def remove_tail(self):
-        pass
+        """
+        Removes the tail node of the linked list.
+        """
+        if not self.empty:
+            curr = self
+            if not curr.next:
+                self.val, self.empty = None, True
+            else:
+                while curr.next and curr.next.next:
+                    curr = curr.next
+                curr.next = None
 
     def delete_node(self, val):
         pass
 
-    def reverse(self):
+    def reverse(self, recursive=True):
         pass
