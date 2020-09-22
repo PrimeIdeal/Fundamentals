@@ -83,14 +83,32 @@ class linked_list:
             new_list.next = self
             return new_list
 
-    def insert_tail(self):
-        pass
+    def insert_tail(self, val):
+        """
+        Appends a new node containing the given value at the tail of the
+        linked list.
+        """
+        if self.empty:
+            self.val, self.empty = val, False
+        else:
+            tail = self.get_tail()
+            tail.next = linked_list(node_list=[val])
 
     def remove_head(self):
-        pass
+        """
+        Removes the head node of the linked list.
+        """
+        if not self.empty:
+            if not self.next:
+                self.val, self.empty = None, True
+            else:
+                self.val, self.next = self.next.val, self.next.next
 
     def remove_tail(self):
         pass
 
     def delete_node(self, val):
+        pass
+
+    def reverse(self):
         pass

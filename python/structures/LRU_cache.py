@@ -5,9 +5,10 @@ from structures.linked_list import double_linked_list
 
 class LRU_cache:
     """
-    Given a set of elements S = (a, b, c, ...) and some operation f that acts on
-    S over time, the LRU cache maintains an up to date record of the order in which f acted
-    on the elements of S and can retrieve the least recently used element in O(1) time.
+    Given a set of elements S = (a, b, c, ...) and some operation f that acts
+    on S over time, the LRU cache maintains an up to date record of the order
+    in which f acted on the elements of S and can retrieve the least recently
+    used element in O(1) time.
     """
 
     def __init__(self):
@@ -31,7 +32,7 @@ class LRU_cache:
             old_node.prev.link_next(old_node.next)
         self.elements.insert_head(element)
         self.node_map[element] = self.elements.head
-    
+
     def get_kth_element(self, k: int = 1) -> Hashable:
         """
         Returns the kth least recently used element in the cache.
