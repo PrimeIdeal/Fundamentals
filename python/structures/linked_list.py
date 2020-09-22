@@ -118,7 +118,22 @@ class linked_list:
                 curr.next = None
 
     def delete_node(self, val):
-        pass
+        """
+        Removes the first node containing the given value.
+        """
+        if self.val == val:
+            if not self.next:
+                self.val, self.empty = None, True
+            else:
+                self.val, self.next = self.next.val, self.next.next
+
+        curr = self
+
+        while curr.next:
+            if curr.next.val == val:
+                curr.next = curr.next.next
+                break
+            curr = curr.next
 
     def reverse(self, recursive=True):
         pass
