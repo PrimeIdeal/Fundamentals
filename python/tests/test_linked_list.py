@@ -217,3 +217,26 @@ class TestLinkedList:
         test_list.delete_node(val)
 
         assert test_list == expected_list
+
+    @pytest.mark.parametrize(
+        'nodes, expected, recursive',
+        [
+            ([1, 2, 3, 4, 5, 6], [6, 5, 4, 3, 2, 1], False),
+            ([1, 2], [2, 1], False),
+            ([1], [1], False),
+            ([], [], False)
+        ],
+        ids=[
+            'Iterative - >2 nodes',
+            'Iterative - 2 nodes',
+            'Iterative - 1 node',
+            'Iterative - Empty list'
+        ]
+    )
+    def test_reverse_iterative(self, nodes, expected, recursive):
+        test_list = linked_list(nodes)
+        expected_list = linked_list(expected)
+
+        reversed_list = test_list.reverse(recursive=recursive)
+
+        assert reversed_list == expected_list

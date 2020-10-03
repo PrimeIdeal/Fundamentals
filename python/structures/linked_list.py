@@ -136,4 +136,13 @@ class linked_list:
             curr = curr.next
 
     def reverse(self, recursive=True):
-        pass
+        """
+        Reverses the linked list.
+        """
+        curr, prev = self, None
+        while curr.next:
+            next = curr.next
+            curr.next = prev
+            curr, prev = next, curr
+        curr.next = prev
+        return curr
