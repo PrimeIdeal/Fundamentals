@@ -4,29 +4,45 @@ from python.structures.LRU_cache import LRU_cache
 
 
 class TestLRUCache:
+    """
+    Test class for the LRU_cache class.
+    """
 
-    def test_update(self):
+    @pytest.fixture(scope='class')
+    def update_cache(self):
         cache = LRU_cache()
-        cache.update(2)
 
-        assert cache.get_kth_element() == 2
+        yield cache
 
-        cache.update(7)
+    @pytest.mark.parametrize(
+        'elt',
+        [2, 7, 2]
+    )
+    def test_update(self, update_cache, elt):
+        update_cache.update(elt)
 
-        assert cache.get_kth_element() == 7
+        assert update_cache.get_kth_element() == elt
 
-        cache.update(2)
-
-        assert cache.get_kth_element() == 2
-
-    def test_get_kth_element(self):
+    @pytest.fixture(scope='class')
+    def kth_elt_cache(self):
         cache = LRU_cache()
-        cache.update(2)
-        cache.update(7)
-        cache.update(8)
-        cache.update(7)
+        for elt in [2, 7, 8, 7]:
+            cache.update(elt)
 
-        assert cache.get_kth_element() == 7
-        assert cache.get_kth_element(2) == 8
-        assert cache.get_kth_element(3) == 2
-        assert cache.get_kth_element(4) is None
+        yield cache
+
+    @pytest.mark.parametrize(
+        'k, expected',
+        [
+            (1, 7),
+            (2, 8),
+            (3, 2),
+            (4, None)
+        ]
+    )
+    def test_get_kth_element(self, kth_elt_cache, k, expected):
+
+        if expected is not None:
+            assert kth_elt_cache.get_kth_element(k=k) == expected
+        else:
+            assert kth_elt_cache.get_kth_element(k=k) is None
