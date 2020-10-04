@@ -139,10 +139,18 @@ class linked_list:
         """
         Reverses the linked list.
         """
-        curr, prev = self, None
-        while curr.next:
-            next = curr.next
-            curr.next = prev
-            curr, prev = next, curr
-        curr.next = prev
+        curr = self
+
+        if recursive:
+            if curr and curr.next:
+                temp = curr.next.reverse(recursive=True)
+                curr.next.next = curr
+                curr.next = None
+                curr = temp
+        else:
+            prev = None
+            while curr:
+                curr.next, curr, prev = prev, curr.next, curr
+            curr = prev
+
         return curr

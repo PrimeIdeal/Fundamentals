@@ -224,16 +224,24 @@ class TestLinkedList:
             ([1, 2, 3, 4, 5, 6], [6, 5, 4, 3, 2, 1], False),
             ([1, 2], [2, 1], False),
             ([1], [1], False),
-            ([], [], False)
+            ([], [], False),
+            ([1, 2, 3, 4, 5, 6], [6, 5, 4, 3, 2, 1], True),
+            ([1, 2], [2, 1], True),
+            ([1], [1], True),
+            ([], [], True)
         ],
         ids=[
             'Iterative - >2 nodes',
             'Iterative - 2 nodes',
             'Iterative - 1 node',
-            'Iterative - Empty list'
+            'Iterative - Empty list',
+            'Recursive - >2 nodes',
+            'Recursive - 2 nodes',
+            'Recursive - 1 node',
+            'Recursive - Empty list'
         ]
     )
-    def test_reverse_iterative(self, nodes, expected, recursive):
+    def test_reverse(self, nodes, expected, recursive):
         test_list = linked_list(nodes)
         expected_list = linked_list(expected)
 
