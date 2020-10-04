@@ -1,6 +1,9 @@
 import pytest
 
-from python.structures.linked_list import linked_list
+from python.structures.linked_list import (
+    double_linked_list,
+    linked_list
+)
 
 
 class TestLinkedList:
@@ -248,3 +251,77 @@ class TestLinkedList:
         reversed_list = test_list.reverse(recursive=recursive)
 
         assert reversed_list == expected_list
+
+
+class TestDoubleLinkedList:
+    """
+    Test class for the double_linked_list class.
+    """
+
+    @pytest.mark.parametrize(
+        'nodes, expected',
+        [
+            ([1, 2, 3], [1, 2, 3]),
+            ([None], [None]),
+            ([None, 3], [None, 3]),
+            ([], []),
+            (None, [])
+        ],
+        ids=[
+            'No Nulls',
+            'Null values in list',
+            'Null and non-null',
+            'Empty input',
+            'Null input'
+        ]
+    )
+    def test_serialize(self, nodes, expected):
+        test_list = double_linked_list(node_list=nodes)
+
+        assert test_list.serialize() == expected
+
+    @pytest.mark.parametrize(
+        'nodes, expected',
+        [
+            ([1, 2, 3], '[1<->2<->3]'),
+            ([], '[]'),
+            ([None, 3], '[None<->3]')
+        ],
+        ids=[
+            'No Nulls',
+            'Empty list',
+            'List with Nulls'
+        ]
+    )
+    def test_str(self, nodes, expected):
+        test_list = double_linked_list(nodes)
+
+        assert str(test_list) == expected
+
+    @pytest.mark.parametrize(
+        'nodes1, nodes2',
+        [
+            ([1, 2, 3], [1, 2, 3]),
+            pytest.param([], [None], marks=pytest.mark.xfail),
+            pytest.param([1, 2, 3], [3, 2, 1], marks=pytest.mark.xfail),
+            pytest.param([1, 2], [1, 2, 3], marks=pytest.mark.xfail)
+        ],
+        ids=[
+            'No Nulls',
+            'Empty and null inputs',
+            'Reversed list',
+            'Different lengths'
+        ]
+    )
+    def test_eq(self, nodes1, nodes2):
+        test_list1 = double_linked_list(nodes1)
+        test_list2 = double_linked_list(nodes2)
+
+        assert test_list1 == test_list2
+
+    def test_eq_wrong_type(self):
+        nodes = [1, 2, 3]
+        test_list1 = double_linked_list(nodes)
+        test_list2 = linked_list(nodes)
+
+        assert not test_list1 == test_list2
