@@ -213,7 +213,7 @@ class TestLinkedList:
             'Multiple occurrences of value'
         ]
     )
-    def test_delete_list(self, nodes, val, expected):
+    def test_delete_node(self, nodes, val, expected):
         test_list = linked_list(nodes)
         expected_list = linked_list(expected)
 
@@ -417,5 +417,34 @@ class TestDoubleLinkedList:
         expected_list = double_linked_list(expected)
 
         test_list.remove_tail()
+
+        assert test_list == expected_list
+
+    @pytest.mark.parametrize(
+        'nodes, val, expected',
+        [
+            ([1, 2, 3], 2, [1, 3]),
+            ([1, 2, 3], 1, [2, 3]),
+            ([1, 2, 3], 3, [1, 2]),
+            ([0], 0, []),
+            ([1, 2, 3], 0, [1, 2, 3]),
+            ([], 2, []),
+            ([1, 2, 2, 3], 2, [1, 2, 3])
+        ],
+        ids=[
+            'Delete from interior nodes',
+            'Delete from head',
+            'Delete from tail',
+            'Single node list',
+            'Value does not occur in list',
+            'Empty list',
+            'Multiple occurrences of value'
+        ]
+    )
+    def test_delete_node(self, nodes, val, expected):
+        test_list = double_linked_list(nodes)
+        expected_list = double_linked_list(expected)
+
+        test_list.delete_node(val)
 
         assert test_list == expected_list

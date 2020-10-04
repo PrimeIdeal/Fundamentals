@@ -243,3 +243,25 @@ class double_linked_list(linked_list):
             new_node = double_linked_list([val])
             tail = self.get_tail()
             tail.next, new_node.prev = new_node, tail
+
+    def delete_node(self, val: Any):
+        """
+        Deletes the first node in the doubly linked list containing the given
+        value.
+
+        Parameters
+        ----------
+        val : Any
+            The value to search for.
+        """
+        if self.val == val:
+            self.remove_head()
+        else:
+            to_delete = self.get_node(val=val)
+            if to_delete:
+                if to_delete.prev:
+                    to_delete.prev.next = to_delete.next
+                    to_delete.prev = None
+                if to_delete.next:
+                    to_delete.next.prev = to_delete.prev
+                    to_delete.next = None
