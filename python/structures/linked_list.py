@@ -143,7 +143,7 @@ class linked_list:
 
         if recursive:
             if curr and curr.next:
-                temp = curr.next.reverse(recursive=True)
+                temp = curr.next.reverse()
                 curr.next.next = curr
                 curr.next = None
                 curr = temp
