@@ -1,6 +1,6 @@
 from typing import Hashable
 
-from structures.linked_list import double_linked_list
+from python.structures.linked_list import double_linked_list
 
 
 class LRU_cache:
