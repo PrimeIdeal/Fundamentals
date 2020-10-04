@@ -1,23 +1,23 @@
-import unittest
+import pytest
 
-from structures.LRU_cache import LRU_cache
+from python.structures.LRU_cache import LRU_cache
 
 
-class test_LRU_cache(unittest.TestCase):
+class TestLRUCache:
 
     def test_update(self):
         cache = LRU_cache()
         cache.update(2)
 
-        self.assertEqual(cache.get_kth_element(), 2)
+        assert cache.get_kth_element() == 2
 
         cache.update(7)
 
-        self.assertEqual(cache.get_kth_element(), 7)
+        assert cache.get_kth_element() == 7
 
         cache.update(2)
 
-        self.assertEqual(cache.get_kth_element(), 2)
+        assert cache.get_kth_element() == 2
 
     def test_get_kth_element(self):
         cache = LRU_cache()
@@ -26,11 +26,7 @@ class test_LRU_cache(unittest.TestCase):
         cache.update(8)
         cache.update(7)
 
-        self.assertEqual(cache.get_kth_element(), 7)
-        self.assertEqual(cache.get_kth_element(2), 8)
-        self.assertEqual(cache.get_kth_element(3), 2)
-        self.assertEqual(cache.get_kth_element(4), None)
-
-
-if __name__ == '__main__':
-    unittest.main()
+        assert cache.get_kth_element() == 7
+        assert cache.get_kth_element(2) == 8
+        assert cache.get_kth_element(3) == 2
+        assert cache.get_kth_element(4) is None
