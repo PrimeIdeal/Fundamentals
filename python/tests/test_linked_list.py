@@ -319,9 +319,23 @@ class TestDoubleLinkedList:
 
         assert test_list1 == test_list2
 
-    def test_eq_wrong_type(self):
-        nodes = [1, 2, 3]
-        test_list1 = double_linked_list(nodes)
-        test_list2 = linked_list(nodes)
-
-        assert not test_list1 == test_list2
+    @pytest.mark.parametrize(
+        'nodes, val, expected',
+        [
+            ([1, 2, 3], 3, [3]),
+            ([1, 2, 3], 2, [2, 3]),
+            ([1, 2, 3], 4, None)
+        ],
+        ids=[
+            'Node exists - no next node',
+            'Node exists - next node',
+            'Node does not exist'
+        ]
+    )
+    def test_get_node(self, nodes, val, expected):
+        test_list = double_linked_list(nodes)
+        if expected is not None:
+            expected_list = double_linked_list(expected)
+            assert test_list.get_node(val) == expected_list
+        else:
+            assert test_list.get_node(val) == expected
