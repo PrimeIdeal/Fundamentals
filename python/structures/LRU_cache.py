@@ -29,9 +29,12 @@ class LRU_cache:
         """
         if element in self.node_map:
             old_node = self.node_map[element]
-            old_node.prev.link_next(old_node.next)
-        self.elements.insert_head(element)
-        self.node_map[element] = self.elements.head
+            if old_node.prev:
+                old_node.prev.next = old_node.next
+            if old_node.next:
+                old_node.next.prev = old_node.prev
+        self.elements = self.elements.insert_head(element)
+        self.node_map[element] = self.elements
 
     def get_kth_element(self, k: int = 1) -> Hashable:
         """
@@ -40,14 +43,15 @@ class LRU_cache:
         Parameters
         ----------
         k : int
-            Element to be retrieved (1st by default, elements are 1-indexed).
+            Optional: Element to be retrieved (1st by default, elements are
+            1-indexed).
 
         Returns
         -------
         Hashable
             The kth least recently used element.
         """
-        curr = self.elements.head
+        curr = self.elements
 
         if not curr:
             return curr
