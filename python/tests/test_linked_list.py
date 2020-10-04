@@ -339,3 +339,83 @@ class TestDoubleLinkedList:
             assert test_list.get_node(val) == expected_list
         else:
             assert test_list.get_node(val) == expected
+
+    @pytest.mark.parametrize(
+        'nodes, val, expected',
+        [
+            ([1, 2, 3], 0, [0, 1, 2, 3]),
+            ([], 0, [0])
+        ],
+        ids=[
+            'Nonempty list',
+            'Empty list'
+        ]
+    )
+    def test_insert_head(self, nodes, val, expected):
+        test_list = double_linked_list(nodes)
+        expected_list = double_linked_list(expected)
+
+        test_list = test_list.insert_head(val)
+
+        assert test_list == expected_list
+
+    @pytest.mark.parametrize(
+        'nodes, val, expected',
+        [
+            ([1, 2, 3], 4, [1, 2, 3, 4]),
+            ([], 0, [0])
+        ],
+        ids=[
+            'Nonempty list',
+            'Empty list'
+        ]
+    )
+    def test_insert_tail(self, nodes, val, expected):
+        test_list = double_linked_list(nodes)
+        expected_list = double_linked_list(expected)
+
+        test_list.insert_tail(val)
+
+        assert test_list == expected_list
+
+    @pytest.mark.parametrize(
+        'nodes, expected',
+        [
+            ([1, 2, 3], [2, 3]),
+            ([0], []),
+            ([], [])
+        ],
+        ids=[
+            'Nonempty list',
+            'Single node list',
+            'Empty list'
+        ]
+    )
+    def test_remove_head(self, nodes, expected):
+        test_list = double_linked_list(nodes)
+        expected_list = double_linked_list(expected)
+
+        test_list.remove_head()
+
+        assert test_list == expected_list
+
+    @pytest.mark.parametrize(
+        'nodes, expected',
+        [
+            ([1, 2, 3], [1, 2]),
+            ([0], []),
+            ([], [])
+        ],
+        ids=[
+            'Nonempty list',
+            'Single node list',
+            'Empty list'
+        ]
+    )
+    def test_remove_tail(self, nodes, expected):
+        test_list = double_linked_list(nodes)
+        expected_list = double_linked_list(expected)
+
+        test_list.remove_tail()
+
+        assert test_list == expected_list
