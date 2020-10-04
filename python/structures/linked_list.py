@@ -203,14 +203,43 @@ class double_linked_list(linked_list):
         """
         return '['+'<->'.join(str(elt) for elt in self.serialize())+']'
 
-    def insert_head(self, val):
-        pass
+    def insert_head(self, val: Any) -> double_linked_list:
+        """
+        Inserts a new node containing the given value at the head of the
+        doubly linked list and returns the new list.
 
-    def insert_tail(self, val):
-        pass
+        Parameters
+        ----------
+        val : Any
+            Value to be inserted.
 
-    def remove_head(self, val):
-        pass
+        Returns
+        -------
+        double_linked_list
+            The list with the new node at its head.
+        """
+        if self.empty:
+            self.val, self.empty = val, False
+            return self
 
-    def remove_tail(self, val):
-        pass
+        new_node = double_linked_list([val])
+        new_node.next, self.prev = self, new_node
+
+        return new_node
+
+    def insert_tail(self, val: Any):
+        """
+        Inserts a new node containing the given value at the tail of the
+        doubly linked list.
+
+        Parameters
+        ----------
+        val : Any
+            Value to be inserted.
+        """
+        if self.empty:
+            self.val, self.empty = val, False
+        else:
+            new_node = double_linked_list([val])
+            tail = self.get_tail()
+            tail.next, new_node.prev = new_node, tail
