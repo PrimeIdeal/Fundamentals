@@ -52,6 +52,9 @@ class linked_list:
         bool
             True if other_list is equal to self, False otherwise.
         """
+        if not isinstance(other_list, linked_list):
+            return False
+
         curr1, curr2 = self, other_list
         while curr1 and curr2:
             if curr1.empty != curr2.empty or curr1.val != curr2.val:

@@ -72,6 +72,11 @@ class TestLinkedList:
 
         assert test_list1 == test_list2
 
+    def test_eq_wrong_type(self):
+        test_list = linked_list([1, 2, 3])
+
+        assert not test_list == [1, 2, 3]
+
     @pytest.mark.parametrize(
         'nodes, val, expected',
         [
@@ -316,6 +321,12 @@ class TestDoubleLinkedList:
     def test_eq(self, nodes1, nodes2):
         test_list1 = double_linked_list(nodes1)
         test_list2 = double_linked_list(nodes2)
+
+        assert test_list1 == test_list2
+
+    def test_eq_single_double(self):
+        test_list1 = linked_list([1, 2, 3])
+        test_list2 = double_linked_list([1, 2, 3])
 
         assert test_list1 == test_list2
 
