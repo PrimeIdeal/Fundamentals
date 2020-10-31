@@ -58,7 +58,7 @@ class file_system:
         else:
             curr = curr.directories[path_list[-1]]
             return sorted(
-                list(curr.files.keys()) + list(self.directories.keys())
+                list(curr.files.keys()) + list(curr.directories.keys())
             )
 
     def mkdir(self, path: str):
