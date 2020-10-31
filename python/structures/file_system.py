@@ -55,11 +55,13 @@ class file_system:
 
         if path_list[-1] in curr.files:
             return [path_list[-1]]
-        else:
+        elif path_list[-1] in curr.directories:
             curr = curr.directories[path_list[-1]]
             return sorted(
                 list(curr.files.keys()) + list(curr.directories.keys())
             )
+        else:
+            raise FileNotFoundError(f'Invalid path: {path}')
 
     def mkdir(self, path: str):
         """
