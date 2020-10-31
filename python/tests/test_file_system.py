@@ -88,3 +88,17 @@ class TestFileSystem:
             test_system.ls(path)
 
         assert(str(error_info.value)) == error_msg
+
+    @pytest.mark.parametrize(
+        'path, expected',
+        [
+            ('/a', 'A+'),
+            ('/b/e/f', 'F')
+        ],
+        ids=[
+            'File in root dir',
+            'File in subdirs'
+        ]
+    )
+    def test_cat(self, test_system, path, expected):
+        assert test_system.cat(path) == expected
