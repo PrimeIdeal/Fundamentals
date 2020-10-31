@@ -36,7 +36,7 @@ class TestFileSystem:
         'path, content, ls_path, expected',
         [
             ('/a', 'A', '/', (['a', 'b', 'c'], 'A')),
-            ('/c/f', 'F', '/c', (['f'], 'F')),
+            ('/b/e/f', 'F', '/b/e', (['f'], 'F')),
             ('/d/g', 'G', '/d', (['g'], 'G')),
             ('/a', '+', '/', (['a', 'b', 'c', 'd'], 'A+'))
         ],
@@ -44,7 +44,7 @@ class TestFileSystem:
             'New file in root dir',
             'New file in existing folder',
             'New file in new folder',
-            'Appending content to existing file'
+            'Append content to existing file'
         ]
     )
     def test_add_content(self, system, path, content, ls_path, expected):
