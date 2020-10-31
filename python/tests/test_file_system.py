@@ -30,12 +30,7 @@ class TestFileSystem:
     def test_mkdir(self, system, path, ls_path, expected):
         system.mkdir(path)
 
-        curr, levels = system, ls_path[1:].split('/')
-        for level in levels:
-            if level:
-                curr = curr.directories[level]
-
-        assert sorted(list(curr.directories.keys())) == expected
+        assert system.ls(ls_path) == expected
 
     @pytest.mark.parametrize(
         'path, content, ls_path, expected',
@@ -49,7 +44,7 @@ class TestFileSystem:
             'New file in root dir',
             'New file in existing folder',
             'New file in new folder',
-            'Append content to existing file'
+            'Appending content to existing file'
         ]
     )
     def test_add_content(self, system, path, content, ls_path, expected):
