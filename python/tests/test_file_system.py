@@ -71,3 +71,20 @@ class TestFileSystem:
     )
     def test_ls(self, test_system, path, expected):
         assert test_system.ls(path) == expected
+
+    @pytest.mark.parametrize(
+        'path, error_msg',
+        [
+            ('/r/q', 'Invalid path: /r/q'),
+            ('/d/u', 'Invalid path: /d/u')
+        ],
+        ids=[
+            'Invalid intermediate component of path',
+            'Invalid final component of path'
+        ]
+    )
+    def test_ls_bad_path(self, test_system, path, error_msg):
+        with pytest.raises(FileNotFoundError) as error_info:
+            test_system.ls(path)
+
+        assert(str(error_info.value)) == error_msg
