@@ -9,7 +9,7 @@ class TestFileSystem:
     """
 
     @pytest.fixture(scope='class')
-    def system(self):
+    def test_system(self):
         yield file_system()
 
     @pytest.mark.parametrize(
@@ -27,10 +27,10 @@ class TestFileSystem:
             'Check on root dir'
         ]
     )
-    def test_mkdir(self, system, path, ls_path, expected):
-        system.mkdir(path)
+    def test_mkdir(self, test_system, path, ls_path, expected):
+        test_system.mkdir(path)
 
-        assert system.ls(ls_path) == expected
+        assert test_system.ls(ls_path) == expected
 
     @pytest.mark.parametrize(
         'path, content, ls_path, expected',
@@ -47,9 +47,27 @@ class TestFileSystem:
             'Append content to existing file'
         ]
     )
-    def test_add_content(self, system, path, content, ls_path, expected):
-        system.add_content(path, content)
+    def test_add_content(self, test_system, path, content, ls_path, expected):
+        test_system.add_content(path, content)
         expected_ls, expected_cat = expected
 
-        assert system.ls(ls_path) == expected_ls
-        assert system.cat(path) == expected_cat
+        assert test_system.ls(ls_path) == expected_ls
+        assert test_system.cat(path) == expected_cat
+
+    @pytest.mark.parametrize(
+        'path, expected',
+        [
+            ('/', ['a', 'b', 'c', 'd']),
+            ('/a', ['a']),
+            ('/d', ['g']),
+            ('/d/g', ['g'])
+        ],
+        ids=[
+            'Root dir',
+            'File in root dir',
+            'Folder one level down',
+            'File one level down'
+        ]
+    )
+    def test_ls(self, test_system, path, expected):
+        assert test_system.ls(path) == expected
