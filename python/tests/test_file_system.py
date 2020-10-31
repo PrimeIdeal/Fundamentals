@@ -18,13 +18,13 @@ class TestFileSystem:
             ('/c', '/', ['c']),
             ('/b', '/', ['b', 'c']),
             ('/b/e', '/b', ['e']),
-            ('/b/e', '/', ['b', 'c'])
+            ('/b/e/.', '/', ['b', 'c'])
         ],
         ids=[
             'One folder in root dir',
             'Two folders in root dir',
             'New folder one level down',
-            'Check on root dir'
+            'No changes to root dir'
         ]
     )
     def test_mkdir(self, test_system, path, ls_path, expected):
@@ -36,7 +36,7 @@ class TestFileSystem:
         'path, content, ls_path, expected',
         [
             ('/a', 'A', '/', (['a', 'b', 'c'], 'A')),
-            ('/b/e/f', 'F', '/b/e', (['f'], 'F')),
+            ('/b/e/f', 'F', '/b/e', (['.', 'f'], 'F')),
             ('/d/g', 'G', '/d', (['g'], 'G')),
             ('/a', '+', '/', (['a', 'b', 'c', 'd'], 'A+'))
         ],
@@ -102,3 +102,20 @@ class TestFileSystem:
     )
     def test_cat(self, test_system, path, expected):
         assert test_system.cat(path) == expected
+
+    @pytest.mark.parametrize(
+        'path, error_msg',
+        [
+            ('/t/d', 'Invalid path: /t/d'),
+            ('/b/e/.', 'File does not exist: /b/e/.')
+        ],
+        ids=[
+            'Dir does not exist',
+            'Not a file'
+        ]
+    )
+    def test_cat_bad_path(self, test_system, path, error_msg):
+        with pytest.raises(FileNotFoundError) as error_info:
+            test_system.cat(path)
+
+        assert str(error_info.value) == error_msg
