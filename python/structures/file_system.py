@@ -177,7 +177,7 @@ class file_system:
             if final in curr.files and final not in curr.directories:
                 raise NotADirectoryError(f'{path} is not a directory')
             if not curr.directories[final]._empty() and not recursive:
-                raise PermissionError(f'directory is nonempty: {path}')
+                raise PermissionError(f'Directory not empty: {path}')
             curr.directories.pop(final)
         else:
             if final in curr.directories and final not in curr.files:
