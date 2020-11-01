@@ -4,7 +4,7 @@ from typing import List
 
 class file_system:
     """
-    Simple file system emulator. Solution for leetcode problem #588:
+    Simple file system emulator. Extends my solution for leetcode problem #588:
     https://leetcode.com/problems/design-in-memory-file-system/
 
     In this implementation, files are stored separately from directories. File
@@ -125,3 +125,61 @@ class file_system:
         if path_list[-1] not in curr.files:
             raise FileNotFoundError(f'File does not exist: {path}')
         return curr.files[path_list[-1]]
+
+    def _empty(self) -> bool:
+        """
+        Determines if the file system is empty.
+
+        Returns
+        -------
+        bool
+            True if the file system contains no files or directories, False
+            otherwise.
+        """
+        return len(self.files) + len(self.directories) == 0
+
+    def rm(self, path: str, dir: bool = False, recursive: bool = False):
+        """
+        Removes the file or directory at the specified path.
+
+        Parameters
+        ----------
+        path : str
+            Target path to be deleted.
+        dir : bool, optional
+            Indicates target is a directory (defaults to False).
+        recursive: bool, optional
+            Indicates target can be deleted if nonempty (defaults to False).
+
+        Raises
+        ------
+        FileNotFoundError
+            Path is invalid.
+        IsADirectoryError
+            Target is a directory and dir is False.
+        NotADirectoryError
+            Target is a file and dir is True.
+        PermissionError
+            Target directory is nonempty and recursive is False.
+        """
+        curr, path_list = self, path[1:].split('/')
+        final = path_list[-1]
+
+        for level in path_list[:-1]:
+            if level not in curr.directories:
+                raise FileNotFoundError(f'Invalid path: {path}')
+            curr = curr.directories[level]
+
+        if final not in curr.files and final not in curr.directories:
+            raise FileNotFoundError(f'Invalid path: {path}')
+
+        if dir:
+            if final in curr.files and final not in curr.directories:
+                raise NotADirectoryError(f'{path} is not a directory')
+            if not curr.directories[final]._empty() and not recursive:
+                raise PermissionError(f'directory is nonempty: {path}')
+            curr.directories.pop(final)
+        else:
+            if final in curr.directories and final not in curr.files:
+                raise IsADirectoryError(f'{path} is not a file')
+            curr.files.pop(final)
