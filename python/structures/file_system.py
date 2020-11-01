@@ -20,6 +20,31 @@ class file_system:
         self.files = defaultdict(str)
         self.directories = defaultdict(file_system)
 
+    def __str__(self) -> str:
+        """
+        Creates string representation of the file system.
+
+        System is represented as a horizontal tree, with each directory's
+        contents sorted alphabetically.
+
+        Returns
+        -------
+        str
+            String representation of the file_system object.
+        """
+        file_strs = list(self.files.keys())
+        dir_strs = []
+        for dir_name, subdir in self.directories.items():
+            dir_str = dir_name + '/'
+            if not subdir._empty():
+                dir_str += '\n\t' + '\n\t'.join(
+                    line for line in str(subdir).split('\n')
+                )
+            dir_strs.append(dir_str)
+
+        contents = sorted(file_strs + dir_strs)
+        return '\n'.join(name for name in contents)
+
     def ls(self, path: str) -> List[str]:
         """
         Returns a sorted list of contents of the indicated path if it is a
