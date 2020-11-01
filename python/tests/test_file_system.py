@@ -119,3 +119,46 @@ class TestFileSystem:
             test_system.cat(path)
 
         assert str(error_info.value) == error_msg
+
+    @pytest.mark.parametrize(
+        'path, expected',
+        [
+            ('/', False),
+            ('/b/e/.', True)
+        ],
+        ids=[
+            'Nonempty directory',
+            'Empty directory'
+        ]
+    )
+    def test_empty(self, test_system, path, expected):
+        curr = test_system
+        if path != '/':
+            for level in path[1:].split('/'):
+                curr = curr.directories[level]
+
+        assert curr._empty() is expected
+
+    @pytest.mark.parametrize(
+        'path, dir, recursive, expected',
+        [
+            ('/b/e/f', False, False, ['.']),
+            ('/c', True, False, ['a', 'b', 'd']),
+            ('/d', True, True, ['a', 'b'])
+        ],
+        ids=[
+            'Remove file',
+            'Remove empty directory',
+            'Remove nonempty directory'
+        ]
+    )
+    def test_rm(self, test_system, path, dir, recursive, expected):
+        ls_path = path[0] if len(path) == 2 else path[:-2]
+
+        test_system.rm(path, dir, recursive)
+
+        with pytest.raises(FileNotFoundError) as error_info:
+            test_system.ls(path)
+
+        assert str(error_info.value) == f'Invalid path: {path}'
+        assert test_system.ls(ls_path) == expected
