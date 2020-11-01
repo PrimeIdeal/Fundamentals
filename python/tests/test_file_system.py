@@ -107,11 +107,13 @@ class TestFileSystem:
         'path, error_msg',
         [
             ('/t/d', 'Invalid path: /t/d'),
-            ('/b/e/.', 'File does not exist: /b/e/.')
+            ('/b/e/.', '/b/e/. is a directory'),
+            ('/b/e/d', 'File does not exist: /b/e/d')
         ],
         ids=[
             'Dir does not exist',
-            'Not a file'
+            'Not a file',
+            'File does not exist'
         ]
     )
     def test_cat_bad_path(self, test_system, path, error_msg):
