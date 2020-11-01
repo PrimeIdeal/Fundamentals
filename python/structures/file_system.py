@@ -123,6 +123,8 @@ class file_system:
             curr = curr.directories[level]
 
         if path_list[-1] not in curr.files:
+            if path_list[-1] in curr.directories:
+                raise FileNotFoundError(f'{path} is a directory')
             raise FileNotFoundError(f'File does not exist: {path}')
         return curr.files[path_list[-1]]
 
