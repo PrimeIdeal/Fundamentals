@@ -162,3 +162,20 @@ class TestFileSystem:
 
         assert str(error_info.value) == f'Invalid path: {path}'
         assert test_system.ls(ls_path) == expected
+
+    @pytest.mark.parametrize(
+        'inputs, error, error_msg',
+        [
+            (('/t/d', False, False), FileNotFoundError, 'Invalid path: /t/d'),
+            (('/q', False, False), FileNotFoundError, 'Invalid path: /q'),
+            (('/a', True, False), NotADirectoryError, '/a is not a directory'),
+            (('/b', True, False), PermissionError, 'Directory not empty: /b'),
+            (('/b', False, False), IsADirectoryError, '/b is not a file')
+        ]
+    )
+    def test_rm_bad_inputs(self, test_system, inputs, error, error_msg):
+        path, dir, recursive = inputs
+        with pytest.raises(error) as error_info:
+            test_system.rm(path, dir, recursive)
+
+        assert str(error_info.value) == error_msg
