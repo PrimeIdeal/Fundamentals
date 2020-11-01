@@ -1,6 +1,9 @@
 import pytest
 
-from python.structures.file_system import file_system
+from python.structures.file_system import (
+    file_system,
+    _system_from_str
+)
 
 
 class TestFileSystem:
@@ -181,3 +184,19 @@ class TestFileSystem:
             test_system.rm(path, dir, recursive)
 
         assert str(error_info.value) == error_msg
+
+    @pytest.mark.parametrize(
+        'test_str',
+        [
+            '',
+            'a\nb\nc',
+            'd1/\n\tb\n\td2/\n\t\ta\n\td3/\n\t\tc\n\t\td4/\n\t\t\t'
+        ],
+        ids=[
+            'Empty system',
+            'No subdirs',
+            'Multiple subdirs'
+        ]
+    )
+    def test_str(self, test_str):
+        assert str(_system_from_str(test_str)) == test_str
