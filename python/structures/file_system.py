@@ -210,3 +210,46 @@ class file_system:
             if final in curr.directories and final not in curr.files:
                 raise IsADirectoryError(f'{path} is not a file')
             curr.files.pop(final)
+
+
+def _system_from_str(file_str: str, file_contents: str = '') -> file_system:
+    """
+    Constructs a file system from its string representation.
+
+    Parameters
+    ----------
+    file_str : str
+        String representation of the file system.
+    file_contents : str, optional
+        String to create new files with (defaults to empty string).
+
+    Returns
+    -------
+    file_system
+        File system corresponding to the input string.
+    """
+    new_system = file_system()
+    curr_dir, curr_str = None, ''
+    for line in file_str.split('\n'):
+        if not line.startswith('\t'):
+            if line.endswith('/'):
+                if curr_dir is not None:
+                    new_system.directories[curr_dir] = _system_from_str(
+                        file_str=curr_str,
+                        file_contents=file_contents
+                    )
+                curr_dir, curr_str = line[:-1], ''
+            else:
+                new_system.files[line] = file_contents
+        else:
+            if curr_str:
+                curr_str += '\n'
+            curr_str += line[1:]
+
+    if curr_dir is not None:
+        new_system.directories[curr_dir] = _system_from_str(
+            file_str=curr_str,
+            file_contents=file_contents
+        )
+
+    return new_system
