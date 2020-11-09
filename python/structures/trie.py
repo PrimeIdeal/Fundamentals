@@ -6,7 +6,7 @@ class trie:
     A search tree where the value of the key is distributed across the
     structure.
 
-    Keys are alphanumeric strings in this implementation.
+    Keys are lowercase alphanumeric strings in this implementation.
     """
 
     def __init__(self):
@@ -34,7 +34,7 @@ class trie:
             raise ValueError(f'Bad input: {new_key}')
 
         curr = self
-        for char in new_key:
+        for char in new_key.lower():
             curr = curr.children[char]
 
         curr.key = True
@@ -64,7 +64,7 @@ class trie:
             raise ValueError(f'Bad input: {target}')
 
         curr = self
-        for char in target:
+        for char in target.lower():
             if char not in curr.children:
                 return False
             curr = curr.children[char]
@@ -89,7 +89,7 @@ class trie:
             Key to be deleted does not exist.
         """
         curr, ancestor, ancestor_key = self, self, ''
-        for char in key:
+        for char in key.lower():
             if char not in curr.children:
                 raise ValueError(f'Key does not exist: {key}')
             if len(curr.children.keys()) > 1:

@@ -15,7 +15,7 @@ class TestTrie:
     @pytest.mark.parametrize(
         'test_key',
         [
-            'apple',
+            'Apple',
             '123',
             'xyz890'
         ],
@@ -29,7 +29,7 @@ class TestTrie:
         test_trie.insert(test_key)
 
         curr = test_trie
-        for char in test_key:
+        for char in test_key.lower():
             assert char in curr.children
             curr = curr.children[char]
 
@@ -59,7 +59,7 @@ class TestTrie:
         [
             ('apple', False, True),
             ('xyz89', False, False),
-            ('xyz', True, True),
+            ('Xyz', True, True),
             ('xyz', False, False),
             ('abc', True, False)
         ],
