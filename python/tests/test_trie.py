@@ -114,3 +114,20 @@ class TestTrie:
 
         assert not test_trie.search('pine')
         assert test_trie.search('pineapple')
+
+    @pytest.mark.parametrize(
+        'key',
+        [
+            'watermelon',
+            'xyz'
+        ],
+        ids=[
+            'Completely nonexistent',
+            'Prefix exists but key does not'
+        ]
+    )
+    def test_delete_bad_key(self, test_trie, key):
+        with pytest.raises(ValueError) as error_info:
+            test_trie.delete(key)
+
+        assert str(error_info.value) == f'Key does not exist: {key}'
