@@ -14,6 +14,7 @@ class trie:
         Constructor for the trie class.
         """
         self.children = defaultdict(trie)
+        self.key = False
 
     def insert(self, new_key: str):
         """
@@ -36,7 +37,7 @@ class trie:
         for char in new_key:
             curr = curr.children[char]
 
-        curr.children['key'] = True
+        self.key = True
 
     def search(self, target: str, prefix: bool = False) -> bool:
         """
@@ -68,6 +69,36 @@ class trie:
                 return False
             curr = curr.children[char]
 
-        if 'key' not in curr.children and not prefix:
+        if not curr.key and not prefix:
             return False
         return True
+
+    def delete(self, key: str):
+        """
+        Deletes a specified key from the trie as well as any prefix nodes that
+        are no longer in use.
+
+        Parameters
+        ----------
+        key : str
+            The key to be deleted.
+
+        Raises
+        ------
+        ValueError
+            Key to be deleted does not exist.
+        """
+        curr, ancestor, ancestor_key = self, self, ''
+        for char in key:
+            if char not in curr.children:
+                raise ValueError(f'Key does not exist: {key}')
+            if len(curr.children.keys()) > 1:
+                ancestor, ancestor_key = curr, char
+            curr = curr.children[char]
+
+        if not curr.key:
+            raise ValueError(f'Key does not exist: {key}')
+        if len(curr.children.keys()) > 0:
+            curr.key = False
+        else:
+            ancestor.children.pop(ancestor_key)
