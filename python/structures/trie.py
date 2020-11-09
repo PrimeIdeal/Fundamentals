@@ -37,7 +37,7 @@ class trie:
         for char in new_key:
             curr = curr.children[char]
 
-        self.key = True
+        curr.key = True
 
     def search(self, target: str, prefix: bool = False) -> bool:
         """
