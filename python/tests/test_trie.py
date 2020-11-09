@@ -33,7 +33,7 @@ class TestTrie:
             assert char in curr.children
             curr = curr.children[char]
 
-        assert curr.children['key']
+        assert curr.key
 
     @pytest.mark.parametrize(
         'test_key',
@@ -92,3 +92,25 @@ class TestTrie:
             test_trie.search(target)
 
         assert str(error_info.value) == f'Bad input: {target}'
+
+    def test_delete_root_ancestor(self, test_trie):
+        test_trie.insert('sun')
+        test_trie.delete('sun')
+
+        assert not test_trie.search('sun')
+
+    def test_delete_non_root_ancestor(self, test_trie):
+        test_trie.insert('apply')
+        test_trie.delete('apply')
+
+        assert not test_trie.search('apply')
+        assert test_trie.search('apple')
+
+    def test_delete_with_children(self, test_trie):
+        test_trie.insert('pineapple')
+        test_trie.insert('pine')
+
+        test_trie.delete('pine')
+
+        assert not test_trie.search('pine')
+        assert test_trie.search('pineapple')
